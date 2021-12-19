@@ -6,10 +6,10 @@ Output for SearchPathProgram osm10.cpp:
 
 - - - - 
 Markup :  `code()`
-
-Legende: Start, Ziel, Fahrzeugspur, x-Hindernis
+   Legende: Start, Ziel, Fahrzeugspur, x-Hindernis
 
 |------------------------------|
+
 |  Z    x    F -- F -- F -- F  |
 |            |    |    |    |  
 |  F    x    F -- F -- F -- F  |
@@ -66,5 +66,7 @@ Legende: Start, Ziel, Fahrzeugspur, x-Hindernis
 |  F -- F -- F    0    x    S    x    F -- F -- F -- F    0  |
 |
 |------------------------------------------------------------|
+
+
 
 Markup :  `code()`
