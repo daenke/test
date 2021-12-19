@@ -1,4 +1,4 @@
-/* gibt mehrere boards mitinenander aus, TEST ausgeschaltet */
+/* gibt mehrere boards miteinander aus, TEST ausgeschaltet */
 
 #include <algorithm>  // for sort
 #include <fstream>
