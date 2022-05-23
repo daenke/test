@@ -12,7 +12,7 @@
 #include <iostream>
 using namespace std;
 
-int _main() {
+int main() {
 		int counter = 0; // zaehlt Zahlen ohne Wiederholungen von Ziffern in der Zahl
 		bool checker; // nur wenn true gab es keine Wiederholungen
 		string zahl;
@@ -32,4 +32,5 @@ int _main() {
 			if ( checker == true) counter++;
 	}
 	cout << counter;
+	return 0;
 }
