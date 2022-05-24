@@ -17,8 +17,8 @@ static int repeats(size_t i)
     do {
             if (zahlDoppelt[(i % 10U)]++ >= 1) {
                     return 0; // wenn nicht 0 in Zelle gab es schon vorher Treffer
-            }				// damit ist Ziifer nicht mehr unque
-    } while (i /= 10U);
+            }				// damit ist Ziifer nicht mehr unique
+    } while (i /= 10U);     // eine Stelle nach link rücken
     return 1;
 }
 
