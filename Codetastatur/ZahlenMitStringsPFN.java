@@ -31,16 +31,18 @@ public class ZahlenMitStringsPFN {
 			
 			//ab hier für führende Nullen
 			checker=true;
-			if (zahl.length()<9) zahl = "0"+zahl;
-			for (int j=0; j<zahl.length(); j++) {
-				if (checker == false) break;
-				for (int k=1+j; k<zahl.length(); k++) {
-					if (zahl.charAt(j) == zahl.charAt(k)) {
-						checker=false; break;
+			if (zahl.length() < 9) {
+				zahl = "0"+zahl;
+				for (int j=0; j<zahl.length(); j++) {
+					if (checker == false) break;
+					for (int k=1+j; k<zahl.length(); k++) {
+						if (zahl.charAt(j) == zahl.charAt(k)) {
+							checker=false; break;
+						}
 					}
 				}
+				if ( checker == true) counter++;			
 			}
-			if ( checker == true) counter++;			
 		}
 		System.out.println(counter);
 	}
