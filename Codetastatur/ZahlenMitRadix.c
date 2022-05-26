@@ -13,18 +13,19 @@
 
 static int repeats(size_t i)
 {
-    unsigned char zahlDoppelt[10U] = {0};
+    unsigned char ziffernZaehler[10U] = {0};
     do {
-            if (zahlDoppelt[(i % 10U)]++ >= 1) {
+            if (ziffernZaehler[(i % 10U)]++ >= 1) {
                     return 0; // wenn nicht 0 in Zelle gab es schon vorher Treffer
             }				// damit ist Ziifer nicht mehr unique
-    } while (i /= 10U);     // eine Stelle nach link rücken
+    } while (i /= 10U);     // eine Stelle nach links rücken
     return 1;
 }
 
 int main() {
     int counter = 0; // zaehlt Zahlen ohne Wiederholungen von Ziffern in der Zahl
 
+	printf("ZahlenMitRadix\n");
     for (size_t i=1000; i<999999999; ++i) {
             counter += repeats(i);
     }

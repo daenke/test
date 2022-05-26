@@ -12,18 +12,21 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-int main() {
+int _main() {
 		int counter = 0; // zaehlt Zahlen ohne Wiederholungen von Ziffern in der Zahl
 		bool checker; // nur wenn true gab es keine Wiederholungen
 		char zahl[20]="hallo";
+		int strLen=0;
 
+		printf("ZahlenMitString\n strlen vor äußerem for:\n");
 		for (int i=1000; i<999999999; ++i) {
 			checker = true;
 			sprintf(zahl, "%d", i);
 
-			for (int j=0; j<(int)strlen(zahl); j++) {
+			strLen=strlen(zahl);
+			for (int j=0; j<strLen; j++) {
 				if (checker == false) break;
-				for (int k=1+j; k<(int) strlen(zahl); k++) {
+				for (int k=1+j; k<strLen; k++) {
 					if (zahl[j] == zahl[k]) {
 						checker=false; break;
 					}
