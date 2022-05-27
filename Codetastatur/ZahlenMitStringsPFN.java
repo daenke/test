@@ -10,19 +10,21 @@
 
 public class ZahlenMitStringsPFN {
 	public static void main(String[] args) {
-		int counter = 0; // zahlt Zahlen ohne Wiederholungen von Ziffern in der Zahl
+		long counter = 0; // zahlt Zahlen ohne Wiederholungen von Ziffern in der Zahl
 		boolean checker; // nur wenn true gab es keine Wiederholungen
-		int stringLength,stringMaxLength,intMax;
+		int stringLength,stringMaxLength;
+		long intMax;
 		
-		intMax = 999999999;
-		String zahl = Integer.toString(intMax);
+		intMax = 999999999; intMax*=10; intMax+=9;intMax*=10; intMax+=9;
+		  // bis zu 11-stellig wurde betrachtet aber Literale gehen nur bis 9-stellig
+		String zahl = Long.toString(intMax);
 		stringMaxLength = zahl.length();
 			
 		System.out.println("Zahlen mit Strings plus führende Nullen:\n");
 		
-		for (int i=0; i < intMax ; ++i) {
+		for (long i=0; i < intMax ; ++i) {
 			checker = true;
-			zahl = Integer.toString(i);
+			zahl = Long.toString(i);
 			stringLength = zahl.length();
 				
 			for (int j=0; j < stringLength; j++) {
