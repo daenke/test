@@ -39,8 +39,8 @@ public class ZahlenMitStringsPFNmA {
 				counter++;
 				System.out.print(zahl+"\t");
 				if (counter%10==0) {
-					System.out.print("\n    "+counter+"\t");
-				}
+					System.out.print("\n    "+counter+"\t"); // die 4 Leerzeichen braucht es nur für werWeissWas
+				}						// zur Formatierung damit es als Code erkannt wird
 			}
 			
 			//ab hier für führende Nullen
