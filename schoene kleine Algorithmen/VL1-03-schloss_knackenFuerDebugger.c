@@ -84,7 +84,7 @@ int test(unsigned int toTest)
 
         //ab hier nur für Debug
         if (DEBUG) {
-            printf("Bit-Nummer = %d Key = %d, richtige Bits = %d\n", i+1, toTest, rightBits);
+            printf("Bit-Nummer = %d Key = %u, richtige Bits = %d\n", i+1, toTest, rightBits);
             printf("            key: %42s \n", bin2String(toTest));
             printf("           goal: %42s \n", bin2String(*abb));
             unsigned int a=toTest & x; printf("   masked key a: %42s \n", bin2String(a));
