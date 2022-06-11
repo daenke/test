@@ -87,13 +87,13 @@ int test(unsigned int toTest,  bool silent)
         //ab hier nur für Debug
          if (DEBUG) {
             printf("Bit-Nummer = %d Key = %u, richtige Bits = %d\n", i+1, toTest, rightBits);
-            printf("            key: %42s \n", bin2String(toTest));
-            printf("           goal: %42s \n", bin2String(*abb));
-            unsigned int a=toTest & x; printf("   masked key a: %42s \n", bin2String(a));
-            unsigned int b=*abb| ~x; printf("  masked goal b: %42s \n", bin2String(b));
-            unsigned int c= (toTest & x) ^ (*abb| ~x); printf("XOR from both c: %42s \n", bin2String(c));
-            unsigned int d= ~((toTest & x) ^ (*abb| ~x)); printf("  flipped XOR d: %42s \n", bin2String(d));
-            unsigned int e= ! ~((toTest & x) ^ (*abb| ~x)); printf(" NOT from all e: %42s \n", bin2String(e));
+            printf("            key: %42s  0x%x\n", bin2String(toTest), toTest);
+            printf("           goal: %42s  0x%x\n", bin2String(*abb), *abb);
+            unsigned int a=toTest & x; printf("   masked key a: %42s  0x%x\n", bin2String(a), a);
+            unsigned int b=*abb| ~x; printf("  masked goal b: %42s  0x%x\n", bin2String(b), b);
+            unsigned int c= (toTest & x) ^ (*abb| ~x); printf("XOR from both c: %42s  0x%x\n", bin2String(c), c);
+            unsigned int d= ~((toTest & x) ^ (*abb| ~x)); printf("  flipped XOR d: %42s  0x%x\n", bin2String(d), d);
+            unsigned int e= ! ~((toTest & x) ^ (*abb| ~x)); printf(" NOT from all e: %42s  0x%x\n", bin2String(e), e);
             printf("     Position -> %42s \n\n", markPosition(i));
         }
         // bis hier nur fuer Debug
@@ -103,8 +103,8 @@ int test(unsigned int toTest,  bool silent)
         printf ("\nGratulation !\n\n");
         printf ("Die Tuer ist offen.\n");
         printf ("So sahen Schluessel und Schloss aus \n");
-        printf ("Schluessel : %42s \n", bin2String(~*abb)); //auch unschön dass ist NICHT der key
-        printf ("Schloss    : %42s \n", bin2String(*abb));
+        printf ("Schluessel : %42s  0x%x\n", bin2String(~*abb),~*abb); //auch unschön dass ist NICHT der key
+        printf ("Schloss    : %42s  0x%x\n", bin2String(*abb), *abb);
         exit(0); // unschön aber wird gebraucht, dass Console stehen bleibt
     }else{
         if (!silent) {
@@ -151,7 +151,7 @@ char * markPosition(int position)
 {
 	static char retbuf[43];
 	int i =0;
-	unsigned int marker = (1<<position);
+	unsigned int marker = (1<<position); // in Bitfolge steht dann bei Position eine 1 >> zB bei Pos 3 eine 8
 
 	for(; i<43 ; i++){
 		retbuf[i]='0'; //init mit 0
