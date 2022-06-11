@@ -18,10 +18,11 @@ bool DEBUG = true;
 unsigned int* abb;
 unsigned int bitNumber = 0;
 
-void generate(void);
-int test(unsigned int, bool silent);
-char * bin2String(unsigned int);
 unsigned int switchBit(int key, int whichBit);
+int test(unsigned int, bool silent);
+void generate(void);
+char * bin2String(unsigned int);
+char * markPosition(int position);
 
 int main (void) // zum Laufen in main umbenennen
 {
@@ -92,7 +93,8 @@ int test(unsigned int toTest,  bool silent)
             unsigned int b=*abb| ~x; printf("  masked goal b: %42s \n", bin2String(b));
             unsigned int c= (toTest & x) ^ (*abb| ~x); printf("XOR from both c: %42s \n", bin2String(c));
             unsigned int d= ~((toTest & x) ^ (*abb| ~x)); printf("  flipped XOR d: %42s \n", bin2String(d));
-            unsigned int e= ! ~((toTest & x) ^ (*abb| ~x)); printf(" NOT from all e: %42s \n\n", bin2String(e));
+            unsigned int e= ! ~((toTest & x) ^ (*abb| ~x)); printf(" NOT from all e: %42s \n", bin2String(e));
+            printf("     Position -> %42s \n\n", markPosition(i));
         }
         // bis hier nur fuer Debug
 	}
@@ -139,6 +141,28 @@ char * bin2String(unsigned int num)
 	do {
 		*--p = "0123456789abcdef"[num % 2]; // nur die ersten 2 Zeichen werden benötigt..
 		num /= 2;
+        if ((++i)%4==0) *--p=' ';
+        if (i%8==0) *--p=' ';
+	} while(i < 43);
+	return retbuf;
+}
+
+char * markPosition(int position)
+{
+	static char retbuf[43];
+	int i =0;
+	unsigned int marker = (1<<position);
+
+	for(; i<43 ; i++){
+		retbuf[i]='0'; //init mit 0
+
+	}
+	char *p; i=0;
+	p = &retbuf[sizeof(retbuf)-1]; // ans ENDE VOM String zeigen
+	*p = '\0'; // Stringabschluss
+	do {
+		*--p = " I∧▲↑↥⇈"[marker % 2]; // nur die ersten 2 Zeichen werden benötigt..
+		marker /= 2;
         if ((++i)%4==0) *--p=' ';
         if (i%8==0) *--p=' ';
 	} while(i < 43);
