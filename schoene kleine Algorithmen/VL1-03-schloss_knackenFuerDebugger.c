@@ -8,7 +8,7 @@
  *  veränderbare Parameter:
  *  i DEBUG: true, false
  *    ergibt kürzere oder längere Ausgabe in Konsole
- *  i ganz am Ende (Z174-176) auskommentieren,
+ *  i in Zeile Z102 auskommentieren,
  *    wenn das zeitliche Verhalten (Durchlaufen) stört
  ******************************************************************/
 
@@ -44,7 +44,7 @@ int main (void) // zum Laufen in main umbenennen
 	int i = 0;
 	for(; i < 32 ; i++){/* für jedes Bit wird geprüft ob es richtig ist oder ob es getaucht werden muss*/
 
-		bitNumber=i;
+		bitNumber=i+1;
 		int rightBits  = test(key, false);/* Anzahl der richtigen Bits bevor das i-te Bit getauscht wurde*/
 		int newRightBits = test(switchBit(key,i), true);/* Anzahl der richtigen Bits nachdem das i-te Bit getauscht wurde*/
 
@@ -90,7 +90,7 @@ int test(unsigned int toTest,  bool silent)
 		}
         //ab hier nur für Debug
          if (DEBUG && !silent) {
-            printf("Bit-Nummer = %d Key = %u, richtige Bits = %d\n", i+1, toTest, rightBits);
+            printf("Bit-Nummer = %d Key = %u, richtige Bits = %d\n", bitNumber, toTest, rightBits);
             printf("            key: %42s  0x%x\n", bin2String(toTest), toTest);
             printf("           goal: %42s  0x%x\n", bin2String(*abb), *abb);
             unsigned int a=toTest & x; printf("   masked key a: %42s  0x%x\n", bin2String(a), a);
@@ -99,6 +99,7 @@ int test(unsigned int toTest,  bool silent)
             unsigned int d= ~((toTest & x) ^ (*abb| ~x)); printf("  flipped XOR d: %42s  0x%x\n", bin2String(d), d);
             unsigned int e= ! ~((toTest & x) ^ (*abb| ~x)); printf(" NOT from all e: %42s  0x%x\n", bin2String(e), e);
             printf("     Position -> %42s \n\n", markPosition(i));
+            usleep(500000);
         }
         // bis hier nur fuer Debug
 	}
@@ -135,10 +136,7 @@ char * bin2String(unsigned int num)
 {
 	static char retbuf[43];
 	int i =0;
-	for(; i<43 ; i++){
-		retbuf[i]='0'; //init mit 0
-
-	}
+	for(; i<43 ; i++) retbuf[i]='0'; //init mit 0
 	char *p; i=0;
 	p = &retbuf[sizeof(retbuf)-1]; // ans ENDE VOM String zeigen
 	*p = '\0'; // Stringabschluss
@@ -157,22 +155,16 @@ char * markPosition(int position)
 	int i =0;
 	unsigned int marker = (1<<position); // in Bitfolge steht dann bei Position eine 1 >> zB bei Pos 3 eine 8
 
-	for(; i<43 ; i++){
-		retbuf[i]='0'; //init mit 0
-
-	}
+	for(; i<43 ; i++) retbuf[i]='0'; //init mit 0
 	char *p; i=0;
 	p = &retbuf[sizeof(retbuf)-1]; // ans ENDE VOM String zeigen
 	*p = '\0'; // Stringabschluss
 	do {
 		*--p = " I∧▲↑↥⇈"[marker % 2]; // nur die ersten 2 Zeichen werden benötigt..
-		// marker /= 2;
+		// marker /= 2; gleich wie:
 		marker >>=1;
         if ((++i)%4==0) *--p=' ';
         if (i%8==0) *--p=' ';
 	} while(i < 43);
-		// for (int j=0; j<1000000000; j++) marker /= 2; // mal schauen ob da ein Geschwindigkeits-Unterschied ist?
-		// for (int j=0; j<1000000000; j++) marker >>= 1;  // nein ist nicht so!
-		usleep(500000);
 	return retbuf;
 }
