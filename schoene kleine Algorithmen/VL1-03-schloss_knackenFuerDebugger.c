@@ -89,7 +89,7 @@ int test(unsigned int toTest,  bool silent)
 			rightBits++;
 		}
         //ab hier nur für Debug
-         if (DEBUG) {
+         if (DEBUG && !silent) {
             printf("Bit-Nummer = %d Key = %u, richtige Bits = %d\n", i+1, toTest, rightBits);
             printf("            key: %42s  0x%x\n", bin2String(toTest), toTest);
             printf("           goal: %42s  0x%x\n", bin2String(*abb), *abb);
