@@ -8,7 +8,7 @@
  *  veränderbare Parameter:
  *  i DEBUG: true, false
  *    ergibt kürzere oder längere Ausgabe in Konsole
- *  i ganz am Ende (Z174) for Schleife auskommentieren,
+ *  i ganz am Ende (Z174-176) auskommentieren,
  *    wenn das zeitliche Verhalten (Durchlaufen) stört
  ******************************************************************/
 
@@ -16,6 +16,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdbool.h>
+#include <unistd.h>
 
 bool DEBUG = true;
 unsigned int* abb;
@@ -171,6 +172,7 @@ char * markPosition(int position)
         if (i%8==0) *--p=' ';
 	} while(i < 43);
 		// for (int j=0; j<1000000000; j++) marker /= 2; // mal schauen ob da ein Geschwindigkeits-Unterschied ist?
-		for (int j=0; j<1000000000; j++) marker >>= 1;  // nein ist nicht so!
+		// for (int j=0; j<1000000000; j++) marker >>= 1;  // nein ist nicht so!
+		usleep(500000);
 	return retbuf;
 }
