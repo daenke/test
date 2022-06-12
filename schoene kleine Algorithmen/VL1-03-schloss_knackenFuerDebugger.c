@@ -5,8 +5,11 @@
  *  hhttps://wiki.freitagsrunde.org/C-Kurs/%C3%9Cbungsaufgaben
  *  Beschreibung:
  *    Bitweise Operatoren in C anwenden
- *  veränderbare Parameter: DEBUG: true, false
+ *  veränderbare Parameter:
+ *  i DEBUG: true, false
  *    ergibt kürzere oder längere Ausgabe in Konsole
+ *  i ganz am Ende (Z174) for Schleife auskommentieren,
+ *    wenn das zeitliche Verhalten (Durchlaufen) stört
  ******************************************************************/
 
 #include <stdio.h>
@@ -162,9 +165,12 @@ char * markPosition(int position)
 	*p = '\0'; // Stringabschluss
 	do {
 		*--p = " I∧▲↑↥⇈"[marker % 2]; // nur die ersten 2 Zeichen werden benötigt..
-		marker /= 2;
+		// marker /= 2;
+		marker >>=1;
         if ((++i)%4==0) *--p=' ';
         if (i%8==0) *--p=' ';
 	} while(i < 43);
+		// for (int j=0; j<1000000000; j++) marker /= 2; // mal schauen ob da ein Geschwindigkeits-Unterschied ist?
+		for (int j=0; j<1000000000; j++) marker >>= 1;  // nein ist nicht so!
 	return retbuf;
 }
