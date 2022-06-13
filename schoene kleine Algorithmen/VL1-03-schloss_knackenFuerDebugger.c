@@ -90,7 +90,7 @@ int test(unsigned int toTest,  bool silent)
 		}
         //ab hier nur für Debug
          if (DEBUG && !silent) {
-            printf("Bit-Position = %d Key = %u, richtige Bits = %d\n", bit2Test, toTest, rightBits);
+            printf("Bit-Position = %d Key = %u, richtige Bits = %d\n", i, toTest, rightBits);
             printf("            key: %42s  0x%x\n", key2String(toTest, bit2Test), toTest);
             printf("           goal: %42s  0x%x\n", bin2String(*abb), *abb);
             unsigned int a=toTest & x; printf("   masked key a: %42s  0x%x\n", bin2String(a), a);
