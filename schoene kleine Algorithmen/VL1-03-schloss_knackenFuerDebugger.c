@@ -9,11 +9,11 @@
  *  Beschreibung:
  *    Bitweise Operatoren in C anwenden
  *  veränderbare Parameter:
+ *  e 220614: + / - um beim Scrollen die Geschwindigkeit zu verändern
+ *      mit Zahlen jetzt besser geloest
  *  i DEBUG: true, false
  *      ergibt kürzere oder längere Ausgabe in Konsole
  *      bei DEBUG== true -> max. 32x ENTER tippen, für jede Bitprüfung
- *  e 220614: + / - um beim Scrollen die Geschwindigkeit zu verändern
- *      mit Zahlen besser geloest
  *  i in Zeile Z102 auskommentieren,
  *      wenn das zeitliche Verhalten (Durchlaufen) stört
  *      oder Wartezeit verändern wenn es schneller laufen soll
@@ -96,7 +96,7 @@ int test(unsigned int toTest,  bool silent)
 		}
         //ab hier nur für Debug
          if (DEBUG && !silent) {
-            printf("Schlüssel fertig bis Bit: %d, Bits in Prüfung: %d, Key = %u, richtige Bits = %d\n", bit2Test, i, toTest, rightBits);
+            printf("Schlüssel: %u, fertig bis Bit: %d, Bit in Prüfung: %d, richtige Bits: %d\n", toTest, bit2Test, i, rightBits);
             printf("            key: %42s  0x%x\n", key2String(toTest, bit2Test), toTest);
             printf("           goal: %42s  0x%x\n", bin2String(*abb), *abb);
             unsigned int a=toTest & x; printf("   masked key a: %42s  0x%x\n", bin2String(a), a);
@@ -127,7 +127,7 @@ int test(unsigned int toTest,  bool silent)
                         c=userInput-'0'+1; // 1=49, Zahlen unten optimiert für große Bandbreite der Geschwindigkeit
                         // und 5 soll gleich wie Vorgabe sein=50000
                 }
-                printf("%d = Wert für userInput", c-1);
+                // printf("%d = Wert für userInput", c-1); // zum testen mal eingefügt
                 if ((c>1) && (c<11)) scrollVelocity = 10800000/(c*c*c);
             }
         }
