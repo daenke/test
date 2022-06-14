@@ -1,15 +1,22 @@
  /*****************************************************************
  *  Datei:          VL1-schloss_knacken.c
  *  erstellt:       07.06.2022
+ *  aktuell:        14.06.2022
  *  von wem:        einige Dinge korrigiert -> dani
  *  hhttps://wiki.freitagsrunde.org/C-Kurs/%C3%9Cbungsaufgaben
+ *  param: void
+ *  return: int 0 bei ordnungsgemäßem Ende
  *  Beschreibung:
  *    Bitweise Operatoren in C anwenden
  *  veränderbare Parameter:
  *  i DEBUG: true, false
- *    ergibt kürzere oder längere Ausgabe in Konsole
+ *      ergibt kürzere oder längere Ausgabe in Konsole
+ *      bei DEBUG== true -> max. 32x ENTER tippen, für jede Bitprüfung
+ *  e 220614: + / - um beim Scrollen die Geschwindigkeit zu verändern
+ *      mit Zahlen besser geloest
  *  i in Zeile Z102 auskommentieren,
- *    wenn das zeitliche Verhalten (Durchlaufen) stört
+ *      wenn das zeitliche Verhalten (Durchlaufen) stört
+ *      oder Wartezeit verändern wenn es schneller laufen soll
  ******************************************************************/
 
 #include <stdio.h>
@@ -20,7 +27,9 @@
 
 bool DEBUG = true;
 unsigned int* abb;
-unsigned int bit2Test = 0;
+unsigned int bit2Test;
+int scrollVelocity = 50000;
+int userInput, c; // Zeichen lesen von der Console, letzter Wert in c mit Anpassung
 
 unsigned int switchBit(int key, int whichBit);
 int test(unsigned int, bool silent);
@@ -42,17 +51,15 @@ int main (void) // zum Laufen in main umbenennen
 	 Bitte beachte, dass sowohl Schlüssel als auch Schloss unsigned Integer sind.
 	 */
 
-	int i = 0;
-	for(; i < 32 ; i++){/* für jedes Bit wird geprüft ob es richtig ist oder ob es getaucht werden muss*/
-		bit2Test=i;
+	for(bit2Test=0; bit2Test < 32 ; bit2Test++){/* für jedes Bit wird geprüft ob es richtig ist oder ob es getaucht werden muss*/
 		int rightBits  = test(key, false);/* Anzahl der richtigen Bits bevor das i-te Bit getauscht wurde*/
-		int newRightBits = test(switchBit(key,i), true);/* Anzahl der richtigen Bits nachdem das i-te Bit getauscht wurde*/
+		int newRightBits = test(switchBit(key, bit2Test), true);/* Anzahl der richtigen Bits nachdem das i-te Bit getauscht wurde*/
 
 		//hier drunter den Breakpoint setzen zum Betrachten von key, DEBUG auf false
 		if(newRightBits > rightBits)
 		/* Wenn die Anzahl der richtigen Bits nach dem Tausch größer ist als vorher,
 		 ist der Schluessel mit dem getauschten Bit der neue Schlüssel*/
-			key=switchBit(key,i);
+			key=switchBit(key,bit2Test);
 	}
 	return 0;
 }
@@ -70,9 +77,8 @@ unsigned int switchBit(int key , int whichBit)
 int test(unsigned int toTest,  bool silent)
 {
 	int rightBits = 0;
-	int i = 0;
 
-	for(; i< 32 ; i++){
+	for(int i = 0; i < 32 ; i++){
 		unsigned int x = 1 << i; // jedes Bit einzeln = Maske: 1, 2, 4, 8, 16, 32, 64...
 
 		//hier drunter den Breakpoint setzen zum Betrachten von toTest
@@ -90,7 +96,7 @@ int test(unsigned int toTest,  bool silent)
 		}
         //ab hier nur für Debug
          if (DEBUG && !silent) {
-            printf("Bit-Position = %d Key = %u, richtige Bits = %d\n", i, toTest, rightBits);
+            printf("Schlüssel fertig bis Bit: %d, Bits in Prüfung: %d, Key = %u, richtige Bits = %d\n", bit2Test, i, toTest, rightBits);
             printf("            key: %42s  0x%x\n", key2String(toTest, bit2Test), toTest);
             printf("           goal: %42s  0x%x\n", bin2String(*abb), *abb);
             unsigned int a=toTest & x; printf("   masked key a: %42s  0x%x\n", bin2String(a), a);
@@ -99,7 +105,7 @@ int test(unsigned int toTest,  bool silent)
             unsigned int d= ~((toTest & x) ^ (*abb| ~x)); printf("  flipped XOR d: %42s  0x%x\n", bin2String(d), d);
             unsigned int e= ! ~((toTest & x) ^ (*abb| ~x)); printf(" NOT from all e: %42s  0x%x\n", bin2String(e), e);
             printf("     Position -> %42s \n\n", markPosition(i));
-            usleep(500000);
+            usleep(scrollVelocity);
         }
         // bis hier nur fuer Debug
 	}
@@ -114,7 +120,16 @@ int test(unsigned int toTest,  bool silent)
     }else{
         if (!silent) {
             printf ("Bit %2d getestet, %d richtige Bits \n", bit2Test, rightBits);
-            int c; if (DEBUG) c = getchar();
+            if (DEBUG) {
+                printf("Mit [ENTER] weiter - Geschwindigkeit von [1-9] einstellbar: ");
+                //while (getchar()<0); // stdin leeren; kriege ich grad noch nicht hin
+                while((userInput = getchar()) != '\n') {
+                        c=userInput-'0'+1; // 1=49, Zahlen unten optimiert für große Bandbreite der Geschwindigkeit
+                        // und 5 soll gleich wie Vorgabe sein=50000
+                }
+                printf("%d = Wert für userInput", c-1);
+                if ((c>1) && (c<11)) scrollVelocity = 10800000/(c*c*c);
+            }
         }
    }
    return rightBits;
