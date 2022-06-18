@@ -3,9 +3,9 @@
  *  erstellt:       07.06.2022
  *  aktuell:        14.06.2022
  *  von wem:        einige Dinge korrigiert -> dani
- *  hhttps://wiki.freitagsrunde.org/C-Kurs/%C3%9Cbungsaufgaben
- *  param: void
- *  return: int 0 bei ordnungsgemäßem Ende
+ *  Quelle: https://wiki.freitagsrunde.org/C-Kurs/%C3%9Cbungsaufgaben
+ *  parameter main():  void
+ *  return    main():  int 0 bei ordnungsgemäßem Ende
  *  Beschreibung:
  *    Bitweise Operatoren in C anwenden
  *  veränderbare Parameter:
@@ -79,18 +79,20 @@ int test(unsigned int toTest,  bool silent)
 	int rightBits = 0;
 
 	for(int i = 0; i < 32 ; i++){
-		unsigned int x = 1 << i; // jedes Bit einzeln = Maske: 1, 2, 4, 8, 16, 32, 64...
+		unsigned int mask = 1 << i; // jedes Bit einzeln = Maske: 1, 2, 4, 8, 16, 32, 64...
 
 		//hier drunter den Breakpoint setzen zum Betrachten von toTest
-		if(! ~((toTest & x) ^ (*abb| ~x))){
+		if(! ~((toTest & mask) ^ (*abb| ~mask))){
                 /* zu testen; Schlüsssel UND x betrachtet nur ein Bit (Maske vorrutschend)
-                      0 bei Bit  == 0, z.B.: 0100 -> 4 bei Bit =1
-                      alle anderen sind 0!!
-                   ist das ungleich == XOR mit dem Bit im Schloss (muss ja ungleich sein für KORREKT)
+                      0 wenn Schluessel-Bit  == 0, z.B.: 0100 -> 4 bei Bit =1
+                      alle anderen sind 0 durch die Maskierung!!
+                      MERKE: Bei UND mit Bitmaske kommt nur 1 im Bit durch!
+                   ist das ungleich == XOR mit dem Bit im Schloss (muss ja ungleich sein nach Vorgabe)
                       diesmal geflippte Maske (== 1011) OR mit dem Bit im Schloss
                       nur wenn Bit im Schloss == 1 kommt es beim OR durch
                       alle anderen Bits werden zu 1!!(unterschiedlich zum Schlüssel), 4 ist nur interressant
-                   im Flip danach werden die 0-en betrachtet und damit bleibt nur die 4
+                      MERKE: Bei ODER mit negierter Bitmaske kommt nur 0 durch!
+                  im Flip danach werden die 0-en betrachtet und damit bleibt nur die 4
                 */
 			rightBits++;
 		}
@@ -99,11 +101,11 @@ int test(unsigned int toTest,  bool silent)
             printf("Schlüssel: %u, fertig bis Bit: %d, Bit in Prüfung: %d, richtige Bits: %d\n", toTest, bit2Test, i, rightBits);
             printf("            key: %42s  0x%x\n", key2String(toTest, bit2Test), toTest);
             printf("           goal: %42s  0x%x\n", bin2String(*abb), *abb);
-            unsigned int a=toTest & x; printf("   masked key a: %42s  0x%x\n", bin2String(a), a);
-            unsigned int b=*abb| ~x; printf("  masked goal b: %42s  0x%x\n", bin2String(b), b);
-            unsigned int c= (toTest & x) ^ (*abb| ~x); printf("XOR from both c: %42s  0x%x\n", bin2String(c), c);
-            unsigned int d= ~((toTest & x) ^ (*abb| ~x)); printf("  flipped XOR d: %42s  0x%x\n", bin2String(d), d);
-            unsigned int e= ! ~((toTest & x) ^ (*abb| ~x)); printf(" NOT from all e: %42s  0x%x\n", bin2String(e), e);
+            unsigned int a=toTest & mask; printf("   masked key a: %42s  0x%x\n", bin2String(a), a);
+            unsigned int b=*abb| ~mask; printf("  masked goal b: %42s  0x%x\n", bin2String(b), b);
+            unsigned int c= (toTest & mask) ^ (*abb| ~mask); printf("XOR from both c: %42s  0x%x\n", bin2String(c), c);
+            unsigned int d= ~((toTest & mask) ^ (*abb| ~mask)); printf("  flipped XOR d: %42s  0x%x\n", bin2String(d), d);
+            unsigned int e= ! ~((toTest & mask) ^ (*abb| ~mask)); printf(" NOT from all e: %42s  0x%x\n", bin2String(e), e);
             printf("     Position -> %42s \n\n", markPosition(i));
             usleep(scrollVelocity);
         }
@@ -121,9 +123,9 @@ int test(unsigned int toTest,  bool silent)
         if (!silent) {
             printf ("Bit %2d getestet, %d richtige Bits \n", bit2Test, rightBits);
             if (DEBUG) {
-                printf("Mit [ENTER] weiter - Geschwindigkeit von [1-9] einstellbar: ");
-                //while (getchar()<0); // stdin leeren; kriege ich grad noch nicht hin
-                while((userInput = getchar()) != '\n') {
+               //while (getchar()==10); // stdin leeren; kriege ich grad noch nicht hin
+               printf("Mit [ENTER] weiter - Geschwindigkeit von [1-9] einstellbar: ");
+                 while((userInput = getchar()) != '\n') {
                         c=userInput-'0'+1; // 1=49, Zahlen unten optimiert für große Bandbreite der Geschwindigkeit
                         // und 5 soll gleich wie Vorgabe sein=50000
                 }
